@@ -1,0 +1,5 @@
+hotel_id,room_type,base_price
+a,president,200
+a,luxe,100
+a,standart+,75
+a,standart,50

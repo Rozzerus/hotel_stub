@@ -2,7 +2,8 @@ import flask
 import csv
 import threading
 import socket
-from time import sleep
+import time
+from datetime import datetime
 
 host = '0.0.0.0'
 port = 8080
@@ -13,7 +14,7 @@ app.config["DEBUG"] = True
 
 @app.route('/status', methods=['GET'])
 def home():
-    return "<h1>Hotel Stub A</h1><p>This hotel stub is working</p>"
+    return "<h1>Hotel Stub C</h1><p>This hotel stub is working</p>"
 
 
 def start_web(name):
@@ -29,15 +30,15 @@ def start_web(name):
         print('\nConnected by', addr)
         try:
             print('\nReading file...\n')
-            with open('hotel_price_a.csv') as file:
+            with open('hotel_price_c.csv') as file:
                 reader = csv.reader(file)
                 next(reader, None)
                 for line in reader:
-                    print('Sending line', line)
-                    out = str(line[0]) + ' ' + str(line[1]) + ' ' + str(line[2]) + ' '
+                    out = str(str(datetime.now()) + ',' + line[0]) + ',' + str(line[1]) + ',' + str(line[2]) + ';'
+                    print('Sending line', out)
                     out = str(out).encode()
                     conn.send(out)
-            sleep(10)
+            time.sleep(10)
             print('End Of Stream.')
             conn.close()
         except socket.error:

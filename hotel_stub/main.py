@@ -19,10 +19,11 @@ def home():
 
 def start_web(name):
     print(f"Thread {name}: starting")
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    socket_host = host
     socket_port = port+1000
-    print('socket_port is ', socket_port)
-    s.bind((host, socket_port))
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print('socket_host and port are ', socket_host, socket_port)
+    s.bind((socket_host, socket_port))
     s.listen(1)
     while True:
         print('\nListening for a client at', host, socket_port)
@@ -34,10 +35,11 @@ def start_web(name):
                 reader = csv.reader(file)
                 next(reader, None)
                 for line in reader:
-                    out = str(str(datetime.now()) + ',' + line[0]) + ',' + str(line[1]) + ',' + str(line[2]) + ';'
+                    out = str(line[0]) + ',' + str(line[1]) + ',' + str(line[2]) + ';'
                     print('Sending line', out)
                     out = str(out).encode()
-                    conn.send(out)
+                    conn.sendall(out)
+                    time.sleep(1)
             time.sleep(10)
             print('End Of Stream.')
             conn.close()

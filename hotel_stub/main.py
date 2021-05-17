@@ -25,9 +25,9 @@ def start_web(name):
     print('socket_host and port are ', socket_host, socket_port)
     s.bind((socket_host, socket_port))
     s.listen(1)
+    print('\nListening for a client at', host, socket_port)
+    conn, addr = s.accept()
     while True:
-        print('\nListening for a client at', host, socket_port)
-        conn, addr = s.accept()
         print('\nConnected by', addr)
         try:
             print('\nReading file...\n')
@@ -40,6 +40,7 @@ def start_web(name):
                     out = str(out).encode()
                     conn.sendall(out)
                     time.sleep(1)
+                file.close()
             time.sleep(10)
             print('End Of Stream.')
             conn.close()

@@ -1,6 +1,7 @@
-package main
+package streams
 
 import org.apache.spark.SparkConf
+import org.apache.spark.sql.cassandra.DataFrameWriterWrapper
 import org.apache.spark.sql.functions.{col, split}
 import org.apache.spark.sql.streaming.Trigger
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}

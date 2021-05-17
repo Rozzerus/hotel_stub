@@ -26,8 +26,8 @@ def start_web(name):
     s.bind((socket_host, socket_port))
     s.listen(1)
     print('\nListening for a client at', host, socket_port)
-    conn, addr = s.accept()
     while True:
+        conn, addr = s.accept()
         print('\nConnected by', addr)
         try:
             print('\nReading file...\n')
@@ -46,6 +46,8 @@ def start_web(name):
             conn.close()
         except socket.error:
             print('Error Occured.\n\nClient disconnected.\n')
+            conn.close()
+            break
     print(f"Thread {name}: finishing")
 
 

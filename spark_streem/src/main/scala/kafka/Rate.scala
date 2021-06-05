@@ -1,11 +1,9 @@
 package kafka
 
-import java.util.Date
-
 class Rate(
-  var dateTime: Date,//date_time
-  var rate: Double,//orig_destination_distance
+            var month: Int,
+            var rate: Double,
 ){
 
-  override def toString = s"Rate($dateTime,  $rate)"
+  override def toString = s"Rate($month,  $rate)"
 }

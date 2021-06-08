@@ -18,14 +18,14 @@ object Consumer {
       .getOrCreate
 
     val df = spark
-      .read
+      .readStream
       .format("kafka")
       .option("kafka.bootstrap.servers", "localhost:9092")
       .option("startingOffsets", "earliest")
       .option("subscribe", TOPIC)
       .load()
 
-    df
+    val result = df
       .select(
         from_json(
           col("value").cast("string"),
@@ -33,19 +33,14 @@ object Consumer {
         ).as("value").as(RowEncoder(getRateSchema))
       )
       .where(col("month").isNotNull)
-      .show(100,1000)
-//      .foreach(row => {
-//        println(row)
-//      })
-//      .write
-//      .format("console")
-//      .save()
-//      .start()
-//      .format("parquet")
-//      .outputMode(OutputMode.Append())
-//      .option("checkpointLocation", "F:\\My\\hotel_stub")
-//      .start("F:\\My\\hotel_stub")
-//      .awaitTermination()
+
+    val stream = result
+      .writeStream
+      .queryName("KafkaToCassandraForeach")
+      .outputMode("update")
+      .foreach(new RateCassandraWriter(spark))
+      .start()
+    stream.awaitTermination()
   }
 
   private def getRateSchema: StructType ={

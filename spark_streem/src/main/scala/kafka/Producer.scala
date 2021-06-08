@@ -2,9 +2,10 @@ package kafka
 
 import kafka.message.DefaultCompressionCodec
 import org.apache.kafka.clients.producer.{KafkaProducer, Producer, ProducerConfig, ProducerRecord}
-import java.time.temporal.ChronoUnit.DAYS
+
 import java.time.LocalDate
-import java.util.{Date, Properties}
+import java.time.temporal.ChronoUnit.DAYS
+import java.util.Properties
 import scala.util.Random
 
 object Producer {
@@ -15,12 +16,12 @@ object Producer {
   private val greatMounts = List(5,9,12)
 
   def main(args: Array[String]): Unit = {
-    val countMessages = 4
+    val countMessages = 40
     val producer = createProducer()
     for (x <- 1 to countMessages) {
       println("n: %s, thread: %s".format(x, Thread.currentThread.getId))
       sendMessageToKafka(createMessage(), producer, TOPIC).get()
-      Thread.sleep(10000)
+      Thread.sleep(1000)
     }
 
   }
